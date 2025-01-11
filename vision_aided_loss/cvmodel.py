@@ -43,10 +43,23 @@ class Swin(torch.nn.Module):
 
         self.cv_type = cv_type
         self.model = timm.create_model('swin_tiny_patch4_window7_224')
-        if not os.path.exists(os.path.join(os.environ['HOME'], '.cache', 'moby_swin_t_300ep_pretrained.pth')):
-            st = gdown.download("https://drive.google.com/u/0/uc?id=1PS1Q0tAnUfBWLRPxh9iUrinAxeq7Y--u&export=download", os.path.join(os.environ['HOME'], '.cache', 'moby_swin_t_300ep_pretrained.pth'))
+        folder=os.path.join(os.environ['HOME'], '.cache', 'moby_swin_t_300ep_pretrained.pth')
 
-        st = torch.load(os.path.join(os.environ['HOME'], '.cache', 'moby_swin_t_300ep_pretrained.pth'), map_location='cpu')
+        if not os.path.exists(folder):
+            import requests
+            url = "https://github.com/SwinTransformer/storage/releases/download/v1.0.3/moby_swin_t_300ep_pretrained.pth"
+            response = requests.get(url, stream=True)
+            response.raise_for_status()  # Raise an error if download fails
+
+            with open(folder, "wb") as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    if chunk:
+                        f.write(chunk)
+
+            print("Download of Swin model complete!")
+
+        
+        st = torch.load(folder, map_location='cpu')
         new_st = {}
         for each in st['model'].keys():
             if 'encoder.' in each:
