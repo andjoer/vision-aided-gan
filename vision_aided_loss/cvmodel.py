@@ -253,7 +253,7 @@ class DINO(torch.nn.Module):
 
 class CVBackbone(torch.nn.Module):
 
-    def __init__(self, cv_type, output_type, diffaug=False, device='cpu'):
+    def __init__(self, cv_type, output_type, diffaug=False, policy='color,translation,cutout',device='cpu'):
         super().__init__(
         )
         cv_type = cv_type.split('+')
@@ -272,7 +272,7 @@ class CVBackbone(torch.nn.Module):
         self.cv_type = cv_type
         self.policy = ''
         if diffaug:
-            self.policy = 'color,translation,cutout'
+            self.policy = policy
             
         self.models = []
         for cv_type_, output_type_ in zip(cv_type, output_type):

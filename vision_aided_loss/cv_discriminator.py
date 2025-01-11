@@ -92,10 +92,10 @@ class MLPD(nn.Module):
 
 
 class Discriminator(torch.nn.Module):
-    def __init__(self, cv_type, output_type='conv_multi_level', loss_type=None, diffaug=True, device='cpu', create_optim=False, num_classes=0, activation=nn.LeakyReLU(0.2, inplace=True), **kwargs):
+    def __init__(self, cv_type, output_type='conv_multi_level', loss_type=None, diffaug=True, policy='color,translation,cutout',device='cpu', create_optim=False, num_classes=0, activation=nn.LeakyReLU(0.2, inplace=True), **kwargs):
         super().__init__()
 
-        self.cv_ensemble = CVBackbone(cv_type, output_type, diffaug=diffaug, device=device)
+        self.cv_ensemble = CVBackbone(cv_type, output_type, diffaug=diffaug, policy=policy,device=device)
 
         if loss_type is not None:
             self.loss_type = losses_list(loss_type=loss_type)
