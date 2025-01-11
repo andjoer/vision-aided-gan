@@ -1,1 +1,2 @@
 from .cv_discriminator import Discriminator
+from .prepare_disc import prepare_cv_ensamble_mps

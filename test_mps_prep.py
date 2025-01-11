@@ -1,5 +1,5 @@
 import pytest
-from prepare_disc import prepare_cv_ensamble_mps
+from vision_aided_loss import prepare_cv_ensamble_mps
 import torch
 import vision_aided_loss
 
