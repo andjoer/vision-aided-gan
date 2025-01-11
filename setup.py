@@ -12,7 +12,7 @@ setuptools.setup(
      description="Vision-aided adversarial training",
      long_description=long_description,
      long_description_content_type="text/markdown",
-     url="https://github.com/nupurkmr9/vision_aided_loss",
+     url="https://github.com/andjoer/vision-aided-gan",
      packages=['vision_aided_loss'],
      install_requires=[
                       "torch>=1.8.0",
