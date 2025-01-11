@@ -19,7 +19,7 @@ setuptools.setup(
                       "torchvision>=0.9.0",
                        "numpy>=1.14.3", 
                        "requests",
-                       "timm",
+                       "timm==0.5.4",
                        "antialiased_cnns",
                        "gdown==4.4.0",
                        "ftfy",
