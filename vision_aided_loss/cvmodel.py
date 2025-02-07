@@ -218,7 +218,7 @@ class DINO(torch.nn.Module):
 
                 # Step 3: Transfer the embedded patches to the VisionTransformer's device
                 transformer_device = next(self.parameters()).device
-                print(f"place x on {transformer_device}")
+
                 x = x.to(transformer_device)
 
                 # Add the [CLS] token to the embed patch tokens
