@@ -74,7 +74,6 @@ class SimpleD(nn.Module):
 class MLPD(nn.Module):
     def __init__(self, in_ch=768, out_ch=256, num_classes=0, activation=nn.LeakyReLU(0.2, inplace=True)):
         super().__init__()
-        print(activation)
         self.decoder = nn.Sequential(spectral_norm(nn.Linear(in_ch, out_ch)),
                                      activation,
                                      )
@@ -92,10 +91,10 @@ class MLPD(nn.Module):
 
 
 class Discriminator(torch.nn.Module):
-    def __init__(self, cv_type, output_type='conv_multi_level', loss_type=None, diffaug=True, policy='color,translation,cutout',device='cpu', create_optim=False, num_classes=0, activation=nn.LeakyReLU(0.2, inplace=True), **kwargs):
+    def __init__(self, cv_type, output_type='conv_multi_level', loss_type=None, diffaug=True, device='cpu', create_optim=False, num_classes=0, activation=nn.LeakyReLU(0.2, inplace=True), **kwargs):
         super().__init__()
 
-        self.cv_ensemble = CVBackbone(cv_type, output_type, diffaug=diffaug, policy=policy,device=device)
+        self.cv_ensemble = CVBackbone(cv_type, output_type, diffaug=diffaug, device=device)
 
         if loss_type is not None:
             self.loss_type = losses_list(loss_type=loss_type)
@@ -140,6 +139,8 @@ class Discriminator(torch.nn.Module):
         self.decoder = nn.ModuleList()
         cv_type = cv_type.split('+')
         output_type = output_type.split('+')
+        if len(output_type) < len(cv_type):
+            output_type = output_type * len(cv_type)
 
         for cv_type_, output_type_ in zip(cv_type, output_type):
             self.decoder.append(get_decoder(cv_type_, output_type_))
@@ -170,7 +171,6 @@ class Discriminator(torch.nn.Module):
                 else:
                     print('Init style not recognized...')
             self.param_count += sum([p.data.nelement() for p in module.parameters()])
-        print('Param count for DAux''s initialized parameters: %d' % self.param_count)
 
     def forward(self, images, c=None, detach=False, **kwargs):
         if detach:
